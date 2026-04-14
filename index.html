@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Venom Style | Luxury Collection</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* === LUXURY DESIGN SYSTEM === */
+        :root {
+            --bg: #0a0a0a; --surface: #1a1a1a; --text: #ffffff;
+            --text-muted: #aaaaaa; --gold: #D4AF37; --gold-hover: #f1c40f;
+            --purple-glow: rgba(138, 43, 226, 0.7); --transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        .light-mode { --bg: #ffffff; --surface: #f5f5f5; --text: #000000; --text-muted: #555555; }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Montserrat', sans-serif; background: var(--bg); color: var(--text); overflow-x: hidden; scroll-behavior: smooth; transition: var(--transition); }
+        h1, h2, h3 { font-family: 'Playfair Display', serif; }
+        a { text-decoration: none; color: inherit; }
+
+        /* === PRELOADER === */
+        #loader { position: fixed; inset: 0; background: #000; display: flex; justify-content: center; align-items: center; z-index: 9999; transition: opacity 1s; }
+        .preloader-img { height: 120px; animation: pulseImg 1.5s infinite alternate; filter: drop-shadow(0 0 20px var(--purple-glow)); border-radius: 10px;}
+        @keyframes pulseImg { from { transform: scale(0.9); } to { transform: scale(1.1); } }
+
+        /* === HEADER === */
+        header { position: fixed; top: 0; width: 100%; padding: 15px 50px; display: flex; justify-content: space-between; align-items: center; background: rgba(10,10,10,0.8); backdrop-filter: blur(10px); z-index: 1000; border-bottom: 1px solid rgba(212,175,55,0.3); }
+        .logo { display: flex; align-items: center; gap: 15px; font-weight: bold; font-family: 'Playfair Display'; font-size: 1.4rem; color: var(--gold); }
+        .logo img { height: 50px; border-radius: 5px; filter: drop-shadow(0 0 10px var(--purple-glow)); }
+        
+        .admin-btn { background: transparent; border: 1px solid var(--gold); color: var(--gold); padding: 5px 15px; border-radius: 20px; cursor: pointer; transition: 0.3s; font-weight: 600; }
+        .admin-btn:hover { background: var(--gold); color: #000; }
+
+        /* === HERO === */
+        .hero { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.8)), url('https://images.pexels.com/photos/1036622/pexels-photo-1036622.jpeg?auto=compress&cs=tinysrgb&w=1920') center/cover; }
+        .hero h1 { font-size: 4rem; margin-bottom: 20px; text-shadow: 0 0 20px rgba(255,255,255,0.2); }
+        .btn { padding: 12px 30px; font-weight: bold; cursor: pointer; border: none; transition: 0.3s; text-transform: uppercase; border-radius: 5px;}
+        .btn-gold { background: var(--gold); color: #000; }
+        .btn-gold:hover { box-shadow: 0 0 20px var(--gold); background: var(--gold-hover); }
+
+        /* === PRODUCT GRID === */
+        .container { max-width: 1200px; margin: 50px auto; padding: 0 20px; }
+        .section-title { text-align: center; font-size: 2.5rem; margin-bottom: 40px; color: var(--gold); }
+        .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 30px; }
+        .product-card { background: var(--surface); border-radius: 10px; overflow: hidden; transition: 0.3s; border: 1px solid transparent; text-align: center; position: relative;}
+        .product-card:hover { transform: translateY(-10px); border-color: var(--gold); box-shadow: 0 10px 30px rgba(138, 43, 226, 0.2); }
+        .product-img { width: 100%; height: 350px; object-fit: cover; }
+        .product-info { padding: 20px; }
+        .product-price { color: var(--gold); font-weight: bold; font-size: 1.2rem; }
+        .trending-badge { position: absolute; top: 10px; right: 10px; background: var(--gold); color: black; padding: 5px 10px; font-size: 0.7rem; font-weight: bold; border-radius: 3px; }
+
+        /* === MODALS === */
+        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 2000; justify-content: center; align-items: center; }
+        .modal-content { background: #111; padding: 40px; border: 1px solid var(--gold); width: 100%; max-width: 400px; text-align: center; border-radius: 10px; box-shadow: 0 0 30px rgba(212, 175, 55, 0.2); }
+        .modal-content input { width: 100%; padding: 12px; margin: 10px 0; background: #000; border: 1px solid var(--gold); color: white; outline: none; border-radius: 5px;}
+
+        /* === ADMIN DASHBOARD === */
+        #admin-dashboard { display: none; padding: 100px 50px; min-height: 100vh; background: #050505; }
+        .admin-controls { display: grid; grid-template-columns: 1fr 2fr; gap: 40px; }
+        .admin-card { background: var(--surface); padding: 30px; border-radius: 10px; border: 1px solid var(--gold); }
+        .admin-item { display: flex; justify-content: space-between; align-items: center; padding: 15px; border-bottom: 1px solid #333; }
+        .action-btns i { font-size: 1.2rem; cursor: pointer; margin-left: 15px; transition: 0.3s; }
+        .edit-btn { color: #4da6ff; }
+        .delete-btn { color: #ff4d4d; }
+
+        @media (max-width: 768px) {
+            header { padding: 10px 20px; }
+            .hero h1 { font-size: 2.5rem; }
+            .admin-controls { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- PRELOADER -->
+    <div id="loader">
+        <img src="venom-logo.jpg" class="preloader-img" alt="Loading..." onerror="this.src='https://via.placeholder.com/120/D4AF37/000000?text=V'">
+    </div>
+
+    <!-- MAIN WEBSITE -->
+    <div id="main-site">
+        <header>
+            <div class="logo">
+                <img src="venom-logo.jpg" alt="Logo" onerror="this.src='https://via.placeholder.com/50/D4AF37/000000?text=V'">
+                VENOM STYLE
+            </div>
+            <div>
+                <i class="fas fa-adjust" onclick="toggleTheme()" style="margin-right: 20px; cursor: pointer; font-size: 1.2rem;"></i>
+                <button class="admin-btn" onclick="openLoginModal()">ADMIN LOGIN</button>
+            </div>
+        </header>
+
+        <section class="hero" id="home">
+            <h1>Elegance Without Limits</h1>
+            <p style="color: var(--gold); font-size: 1.2rem; letter-spacing: 3px;">PREMIUM COLLECTION 2025</p><br>
+            <button class="btn btn-gold" onclick="document.getElementById('shop').scrollIntoView()">Shop Collection</button>
+        </section>
+
+        <section class="container" id="shop">
+            <h2 class="section-title">Exclusive Collection</h2>
+            <div class="product-grid" id="productGrid">
+                <!-- Products loaded from Firebase -->
+            </div>
+        </section>
+    </div>
+
+    <!-- ADMIN LOGIN MODAL -->
+    <div class="modal" id="loginModal">
+        <div class="modal-content">
+            <h2 style="color:var(--gold); margin-bottom: 20px;">Admin Access</h2>
+            <input type="email" id="adminEmail" placeholder="Admin Email">
+            <input type="password" id="adminPass" placeholder="Password">
+            <button class="btn btn-gold" style="width:100%; margin-top: 10px;" onclick="handleLogin()">Unlock Dashboard</button>
+            <button class="btn" style="color:gray; width:100%; margin-top: 10px; background: transparent;" onclick="closeLoginModal()">Cancel</button>
+        </div>
+    </div>
+
+    <!-- EDIT PRODUCT MODAL -->
+    <div class="modal" id="editModal">
+        <div class="modal-content">
+            <h2 style="color:var(--gold); margin-bottom: 20px;">Edit Product</h2>
+            <input type="text" id="editName">
+            <input type="number" id="editPrice">
+            <input type="text" id="editImg">
+            <label style="display:block; margin: 15px 0; color: white; text-align: left;">
+                <input type="checkbox" id="editTrending"> Trending Item
+            </label>
+            <button class="btn btn-gold" style="width:100%" onclick="saveEdit()">Update Product</button>
+            <button class="btn" style="color:gray; width:100%; margin-top: 10px; background: transparent;" onclick="closeEditModal()">Cancel</button>
+        </div>
+    </div>
+
+    <!-- ADMIN DASHBOARD -->
+    <div id="admin-dashboard">
+        <div style="display:flex; justify-content: space-between; align-items: center; margin-bottom: 40px;">
+            <h1 style="color: var(--gold);">Management Dashboard</h1>
+            <button class="btn btn-gold" onclick="handleLogout()">Logout</button>
+        </div>
+
+        <div class="admin-controls">
+            <div class="admin-card">
+                <h3 style="color:var(--gold); margin-bottom:20px;">Add New Item</h3>
+                <input type="text" id="pName" placeholder="Product Name" style="width:100%; padding:10px; margin-bottom:10px; background:#000; color:#fff; border:1px solid var(--gold);">
+                <input type="number" id="pPrice" placeholder="Price ($)" style="width:100%; padding:10px; margin-bottom:10px; background:#000; color:#fff; border:1px solid var(--gold);">
+                <input type="text" id="pImg" placeholder="Image URL" style="width:100%; padding:10px; margin-bottom:10px; background:#000; color:#fff; border:1px solid var(--gold);">
+                <label style="display:block; margin: 10px 0;">
+                    <input type="checkbox" id="pTrending"> Mark as Trending
+                </label>
+                <button class="btn btn-gold" style="width:100%; margin-top: 10px;" onclick="addNewProduct()">Upload Product</button>
+            </div>
+
+            <div class="admin-card">
+                <h3 style="color:var(--gold); margin-bottom:20px;">Store Inventory</h3>
+                <div id="adminProductList"></div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, collection, addDoc, deleteDoc, doc, onSnapshot, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+        // FIREBASE CONFIG
+        const firebaseConfig = {
+            apiKey: "AIzaSyCmC0ZrK-4I9NYedysw_42bAafRk0RY1_I",
+            authDomain: "neweb-7afd6.firebaseapp.com",
+            projectId: "neweb-7afd6",
+            storageBucket: "neweb-7afd6.firebasestorage.app",
+            messagingSenderId: "610295869560",
+            appId: "1:610295869560:web:c6fe83759f5e247447fd8d"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const auth = getAuth(app);
+        const productsCol = collection(db, "products");
+
+        let editId = null;
+
+        // AUTH MONITOR
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                document.getElementById('main-site').style.display = 'none';
+                document.getElementById('admin-dashboard').style.display = 'block';
+            } else {
+                document.getElementById('main-site').style.display = 'block';
+                document.getElementById('admin-dashboard').style.display = 'none';
+            }
+        });
+
+        // FETCH DATA
+        onSnapshot(productsCol, (snapshot) => {
+            const products = [];
+            snapshot.forEach(doc => products.push({ id: doc.id, ...doc.data() }));
+            renderUI(products);
+        });
+
+        function renderUI(data) {
+            // Shop UI
+            const grid = document.getElementById('productGrid');
+            grid.innerHTML = data.map(p => `
+                <div class="product-card">
+                    ${p.trending ? '<div class="trending-badge">TRENDING</div>' : ''}
+                    <img src="${p.image}" class="product-img" alt="${p.name}">
+                    <div class="product-info">
+                        <h3>${p.name}</h3>
+                        <p class="product-price">$${p.price}</p>
+                    </div>
+                </div>
+            `).join('');
+
+            // Admin List UI
+            const list = document.getElementById('adminProductList');
+            list.innerHTML = data.map(p => `
+                <div class="admin-item">
+                    <span>${p.name} ($${p.price})</span>
+                    <div class="action-btns">
+                        <i class="fas fa-edit edit-btn" onclick="openEdit('${p.id}', '${p.name}', ${p.price}, '${p.image}', ${p.trending})"></i>
+                        <i class="fas fa-trash delete-btn" onclick="deleteItem('${p.id}')"></i>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // ACTIONS
+        window.handleLogin = async () => {
+            const email = document.getElementById('adminEmail').value;
+            const pass = document.getElementById('adminPass').value;
+            try {
+                await signInWithEmailAndPassword(auth, email, pass);
+                closeLoginModal();
+            } catch (e) { alert("Login Failed: Check Credentials"); }
+        };
+
+        window.handleLogout = () => signOut(auth);
+
+        window.addNewProduct = async () => {
+            const name = document.getElementById('pName').value;
+            const price = document.getElementById('pPrice').value;
+            const image = document.getElementById('pImg').value;
+            const trending = document.getElementById('pTrending').checked;
+            if(!name || !price || !image) return alert("Fill all fields");
+            
+            await addDoc(productsCol, { name, price: Number(price), image, trending });
+            document.getElementById('pName').value = '';
+            document.getElementById('pPrice').value = '';
+            document.getElementById('pImg').value = '';
+        };
+
+        window.deleteItem = async (id) => {
+            if(confirm("Permanently delete this item?")) await deleteDoc(doc(db, "products", id));
+        };
+
+        window.openEdit = (id, name, price, img, trend) => {
+            editId = id;
+            document.getElementById('editName').value = name;
+            document.getElementById('editPrice').value = price;
+            document.getElementById('editImg').value = img;
+            document.getElementById('editTrending').checked = trend;
+            document.getElementById('editModal').style.display = 'flex';
+        };
+
+        window.saveEdit = async () => {
+            await updateDoc(doc(db, "products", editId), {
+                name: document.getElementById('editName').value,
+                price: Number(document.getElementById('editPrice').value),
+                image: document.getElementById('editImg').value,
+                trending: document.getElementById('editTrending').checked
+            });
+            closeEditModal();
+        };
+
+        // UI HELPERS
+        window.openLoginModal = () => document.getElementById('loginModal').style.display = 'flex';
+        window.closeLoginModal = () => document.getElementById('loginModal').style.display = 'none';
+        window.closeEditModal = () => document.getElementById('editModal').style.display = 'none';
+        window.toggleTheme = () => document.body.classList.toggle('light-mode');
+
+        window.onload = () => {
+            setTimeout(() => {
+                document.getElementById('loader').style.opacity = '0';
+                setTimeout(() => document.getElementById('loader').style.display = 'none', 1000);
+            }, 1000);
+        };
+    </script>
+</body>
+</html>
